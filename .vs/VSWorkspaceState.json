@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\backend",
+    "\\frontend"
   ],
-  "SelectedNode": "\\backend",
+  "SelectedNode": "\\frontend",
   "PreviewInSolutionExplorer": false
 }
