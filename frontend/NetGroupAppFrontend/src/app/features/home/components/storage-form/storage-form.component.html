@@ -1,24 +1,24 @@
 <mat-card>
     <mat-card-content>
-        <form [formGroup]="storageForm">
+        <form [formGroup]="storageForm" (ngSubmit)="onSubmit()">
 			<h2>Create Storage Space</h2>
-            <div formArrayName="storage_levels">
+            <div formArrayName="storage_space">
 
-				<div *ngFor="let level of storageLevels.controls; let i = index" [formGroupName]="i">
+				<div *ngFor="let level of storageSpace.controls; let i = index" [formGroupName]="i">
 
 					<mat-form-field appearance="legacy">
 						<input
 							matInput
 							type="text"
-							formControlName="storage_space"
+							formControlName="storage_level"
 							[placeholder]="'Level ' + (i + 1)"
 							required
 						/>
 						
 					</mat-form-field>
 					
-					<mat-icon *ngIf="storageLevels.controls.length !== 1" matSuffix class="icon" (click)="removeStorageLevel(i)">remove_circle_outline</mat-icon>
-					<mat-icon *ngIf="storageLevels.controls.length - 1 == i" matSuffix class="icon" (click)="addStorageLevel()">add_circle_outline</mat-icon>
+					<mat-icon *ngIf="storageSpace.controls.length !== 1" matSuffix class="icon" (click)="removeStorageLevel(i)">remove_circle_outline</mat-icon>
+					<mat-icon *ngIf="storageSpace.controls.length - 1 == i" matSuffix class="icon" (click)="addStorageLevel()">add_circle_outline</mat-icon>
 				</div>
 
             </div>
