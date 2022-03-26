@@ -1,0 +1,14 @@
+$row-height: 50px;
+
+.header {
+	display: block;
+	width: 100%;
+
+	&-toolbar-main {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		height: $row-height;
+		padding: 6px 10px 0;
+	}
+}
