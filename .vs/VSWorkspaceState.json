@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\backend",
+    "\\backend\\NetGroupAppBackend",
     "\\frontend"
   ],
-  "SelectedNode": "\\frontend",
+  "SelectedNode": "\\backend\\NetGroupAppBackend\\.gitignore",
   "PreviewInSolutionExplorer": false
 }
