@@ -7,7 +7,7 @@ import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core
     encapsulation: ViewEncapsulation.None,
 })
 export class HomeComponent implements OnInit {
-    @HostBinding('class.home-container') hostCssClass = true;
+    @HostBinding('class.home') hostCssClass = true;
 
     constructor() {}
 

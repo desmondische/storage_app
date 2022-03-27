@@ -7,6 +7,8 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { Storage } from 'src/app/core/models/storage.model';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-storage-form',
@@ -17,43 +19,36 @@ import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
 export class StorageFormComponent implements OnInit {
     @HostBinding('class.storage-form') hostCssClass = true;
 
-	storages$: Observable<any[]> | undefined;
+	storage: Storage | undefined;
     storageForm: FormGroup;
-	storage: any;
 
     constructor(
 			private fb: FormBuilder,
-			private service: StorageService
+			private service: StorageService,
+			private dialogRef: MatDialogRef<StorageFormComponent>
 	) {
         this.storageForm = this.fb.group({
             storage_space: this.fb.array([
-				this.fb.group({
-					storage_level: '',
-				}),
-				this.fb.group({
-					storage_level: '',
-				})
+				this.newStorageLevel,
+				this.newStorageLevel
 			]),
         });
     }
-
-    ngOnInit(): void {
-		this.storages$ = this.service.getStoragesList();
-		console.log(this.storages$.subscribe(response => console.log(response)));
+	
+	get storageSpace(): FormArray {
+		return this.storageForm.get('storage_space') as FormArray;
 	}
 
-    get storageSpace(): FormArray {
-        return this.storageForm.get('storage_space') as FormArray;
-    }
+	get newStorageLevel(): FormGroup {
+		return this.fb.group({
+			storage_level: '',
+		});
+	}
 
-    newStorageLevel(): FormGroup {
-        return this.fb.group({
-            storage_level: '',
-        });
-    }
+    ngOnInit(): void { }
 
     addStorageLevel() {
-        this.storageSpace.push(this.newStorageLevel());
+        this.storageSpace.push(this.newStorageLevel);
     }
 
     removeStorageLevel(i: number) {
@@ -61,14 +56,20 @@ export class StorageFormComponent implements OnInit {
     }
 
     onSubmit() {
-		var storage = {
-			id: 0,
-			space: "test3"
-		}
-        console.log(this.storageForm.value);
 
-		this.service.addStorage(storage).subscribe(
-			data => console.log('success', data)
-		);
+		let storageLevels: string[] = 
+			this.storageSpace.value.map((i:any) => i.storage_level);
+
+		this.storage = {
+			id: 0,
+			space: storageLevels.join('/')
+		}
+
+		this.service.addStorage(this.storage).subscribe(
+			data => {
+				this.dialogRef.close('closed');
+				console.log(data);
+			}
+		)
     }
 }

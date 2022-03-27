@@ -1,5 +1,9 @@
-.home-container {
+.home {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	&-container {
+		padding: 30px 0;
+	}
 }

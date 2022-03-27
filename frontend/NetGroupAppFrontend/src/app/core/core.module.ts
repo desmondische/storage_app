@@ -11,7 +11,6 @@ import { StorageService } from './services/storage.service';
     HeaderComponent
   ],
     imports: [CommonModule, HttpClientModule, MatToolbarModule],
-	providers: [StorageService],
 	exports: [HeaderComponent]
 })
 export class CoreModule {}
