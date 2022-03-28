@@ -1,6 +1,8 @@
 .storage-view {
 	table {
 		width: 1000px;
+		background: none; 
+		border-radius: 15px;
 
 		.icon {
 			cursor: pointer;
@@ -24,13 +26,17 @@
 		mat-icon + mat-icon {
 			margin-left: 5px;
 		}
+
+		&.mat-cell {
+			border-bottom-style: none;
+		}
 	}
 
 	.action-container {
 		padding-bottom: 16px;
 
-		button + button {
-			margin-left: 8px;
+		button {
+			margin-right: 8px;
 		}
 	}
 }

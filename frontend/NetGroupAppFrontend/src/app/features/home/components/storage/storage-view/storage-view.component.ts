@@ -1,4 +1,4 @@
-import { StorageFormComponent } from './../storage-form/storage-form.component';
+import { StorageFormComponent } from '../storage-form/storage-form.component';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
 import { Storage } from 'src/app/core/models/storage.model';

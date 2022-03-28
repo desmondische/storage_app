@@ -1,10 +1,10 @@
 <div class="action-container">
-	<button mat-flat-button (click)="openDialog()" matRipple [matRippleDisabled]="true">
+	<button mat-flat-button (click)="openDialog()">
 		Add data
 	</button>
 </div>
 
-<table mat-table [dataSource]="data" class="mat-elevation-z4">
+<table mat-table [dataSource]="data" class="fade-in neumorphic">
 
 	<!-- Position Column -->
 	<ng-container matColumnDef="id">

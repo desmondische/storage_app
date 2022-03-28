@@ -9,14 +9,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatRippleModule } from '@angular/material/core';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { HomeComponent } from './home.component';
-import { StorageFormComponent } from './components/storage-form/storage-form.component';
-import { StorageViewComponent } from './components/storage-view/storage-view.component';
+import { StorageFormComponent } from './components/storage/storage-form/storage-form.component';
+import { StorageViewComponent } from './components/storage/storage-view/storage-view.component';
+import { ItemViewComponent } from './components/item/item-view/item-view.component';
 
 @NgModule({
-	declarations: [HomeComponent, StorageFormComponent, StorageViewComponent],
+	declarations: [HomeComponent, StorageFormComponent, StorageViewComponent, ItemViewComponent],
 	imports: [
 		CommonModule,
 		MatCardModule,
@@ -28,7 +29,7 @@ import { StorageViewComponent } from './components/storage-view/storage-view.com
 		MatIconModule,
 		MatTableModule,
 		MatDialogModule,
-		MatRippleModule
+		MatTabsModule
 	],
 	exports: [],
 	providers: [StorageService]

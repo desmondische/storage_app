@@ -3,8 +3,9 @@
     "",
     "\\backend",
     "\\backend\\NetGroupAppBackend",
+    "\\backend\\NetGroupAppBackend\\Controllers",
     "\\frontend"
   ],
-  "SelectedNode": "\\backend\\NetGroupAppBackend\\Program.cs",
+  "SelectedNode": "\\backend\\NetGroupAppBackend\\Controllers\\ItemsController.cs",
   "PreviewInSolutionExplorer": false
 }

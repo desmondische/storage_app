@@ -1,4 +1,15 @@
 <!-- <app-storage-form></app-storage-form> -->
 <div class="home-container">
-	<app-storage-view></app-storage-view>
+	<mat-tab-group animationDuration="0ms">
+		<mat-tab label="Storages view">
+			<div class="view-container">
+				<app-storage-view></app-storage-view>
+			</div>
+		</mat-tab>
+		<mat-tab label="Items view">
+			<div class="view-container">
+				<app-item-view></app-item-view>
+			</div>
+		</mat-tab>
+	</mat-tab-group>
 </div>

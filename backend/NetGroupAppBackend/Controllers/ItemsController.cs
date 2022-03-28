@@ -35,23 +35,16 @@ namespace NetGroupAppBackend.Controllers
         {
             var item = await _context.Items.FindAsync(id);
 
-            if (item == null)
-            {
-                return NotFound();
-            }
+            if (item == null) return NotFound();
 
             return item;
         }
 
         // PUT: api/Items/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutItem(int id, Item item)
         {
-            if (id != item.Id)
-            {
-                return BadRequest();
-            }
+            if (id != item.Id) return BadRequest();
 
             _context.Entry(item).State = EntityState.Modified;
 
@@ -61,21 +54,15 @@ namespace NetGroupAppBackend.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!ItemExists(id)) return NotFound();
+                else throw;
+
             }
 
             return NoContent();
         }
 
         // POST: api/Items
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
@@ -85,15 +72,26 @@ namespace NetGroupAppBackend.Controllers
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
 
+        // POST: api/Items/5/storages
+        //[HttpPost("{id}/storages")]
+        //public async Task<ActionResult<StorageItem>> PostItemToStorage(int id, [FromBody] StorageItem value)
+        //{
+        //    //Todo Tee ise
+        //    var student = _context.Storages.Include(x => x.StorageItems).FirstOrDefault(x => x.Id == id);
+        //    value.ItemId = id;
+        //    if (student.StorageItems == null)
+        //        student.StorageItems = new List<StorageItem>();
+        //    student.StorageItems.Add(value);
+        //    _context.SaveChanges();
+        //    return value;
+        //}
+
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {
             var item = await _context.Items.FindAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
+            if (item == null) return NotFound();
 
             _context.Items.Remove(item);
             await _context.SaveChangesAsync();

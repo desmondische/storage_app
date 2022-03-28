@@ -1,9 +1,4 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetGroupAppBackend.Data;
@@ -41,6 +36,17 @@ namespace NetGroupAppBackend.Controllers
             }
 
             return storage;
+        }
+
+        [HttpGet("GetCustomerOrders")]
+        public async Task<ActionResult<Storage>> GetStorageItems(int storageId)
+        {
+            var storage = await _context.Storages
+                                .Where(c => c.Id == storageId)
+                                .Include(c => c.Items)
+                                .FirstOrDefaultAsync();
+
+            return storage == null ? NotFound() : storage;
         }
 
         // PUT: api/Storages/5

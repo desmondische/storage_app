@@ -12,7 +12,7 @@ using NetGroupAppBackend.Data;
 namespace NetGroupAppBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220325183223_InitialCreate")]
+    [Migration("20220328201135_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,13 +42,18 @@ namespace NetGroupAppBackend.Migrations
                     b.Property<int?>("SerialNumber")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StorageId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items", (string)null);
+                    b.HasIndex("StorageId");
+
+                    b.ToTable("Item", (string)null);
                 });
 
             modelBuilder.Entity("NetGroupAppBackend.Models.Storage", b =>
@@ -59,13 +64,30 @@ namespace NetGroupAppBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Space")
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("StorageSpace")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Storages", (string)null);
+                    b.ToTable("Storage", (string)null);
+                });
+
+            modelBuilder.Entity("NetGroupAppBackend.Models.Item", b =>
+                {
+                    b.HasOne("NetGroupAppBackend.Models.Storage", "Storage")
+                        .WithMany("Items")
+                        .HasForeignKey("StorageId");
+
+                    b.Navigation("Storage");
+                });
+
+            modelBuilder.Entity("NetGroupAppBackend.Models.Storage", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
