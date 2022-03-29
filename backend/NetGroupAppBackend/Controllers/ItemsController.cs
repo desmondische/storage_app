@@ -26,7 +26,11 @@ namespace NetGroupAppBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Item>>> GetItems()
         {
-            return await _context.Items.ToListAsync();
+            var item = await _context.Items
+                                .Include(c => c.Storage)
+                                .ToListAsync();
+
+            return item;
         }
 
         // GET: api/Items/5
@@ -71,20 +75,6 @@ namespace NetGroupAppBackend.Controllers
 
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
-
-        // POST: api/Items/5/storages
-        //[HttpPost("{id}/storages")]
-        //public async Task<ActionResult<StorageItem>> PostItemToStorage(int id, [FromBody] StorageItem value)
-        //{
-        //    //Todo Tee ise
-        //    var student = _context.Storages.Include(x => x.StorageItems).FirstOrDefault(x => x.Id == id);
-        //    value.ItemId = id;
-        //    if (student.StorageItems == null)
-        //        student.StorageItems = new List<StorageItem>();
-        //    student.StorageItems.Add(value);
-        //    _context.SaveChanges();
-        //    return value;
-        //}
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]

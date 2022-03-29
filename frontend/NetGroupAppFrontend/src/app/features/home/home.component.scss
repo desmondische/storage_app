@@ -3,11 +3,12 @@
 	align-items: center;
 	justify-content: center;
 
-	&-container {
+	.home-container {
+		width: 1280px;
+		display: flex;
+		position: relative;
+		justify-content: center;
 		padding: 30px 0;
-
-		& .view-container {
-			margin: 2.4rem;
-		}
+		margin: 0 auto;
 	}
 }

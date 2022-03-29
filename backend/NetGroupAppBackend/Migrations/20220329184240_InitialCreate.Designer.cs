@@ -12,7 +12,7 @@ using NetGroupAppBackend.Data;
 namespace NetGroupAppBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220328201135_InitialCreate")]
+    [Migration("20220329184240_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,12 +32,22 @@ namespace NetGroupAppBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
 
                     b.Property<int?>("SerialNumber")
                         .HasColumnType("int");
@@ -80,7 +90,8 @@ namespace NetGroupAppBackend.Migrations
                 {
                     b.HasOne("NetGroupAppBackend.Models.Storage", "Storage")
                         .WithMany("Items")
-                        .HasForeignKey("StorageId");
+                        .HasForeignKey("StorageId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Storage");
                 });

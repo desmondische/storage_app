@@ -1,5 +1,4 @@
-import { StorageService } from 'src/app/core/services/storage.service';
-import { Observable } from 'rxjs';
+import { StorageService } from 'src/app/core/services/storage/storage.service';
 import {
     Component,
     HostBinding,
@@ -7,16 +6,16 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
-import { Storage } from 'src/app/core/models/storage.model';
+import { Storage } from 'src/app/core/models/storage/storage.model';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
-    selector: 'app-storage-form',
-    templateUrl: './storage-form.component.html',
-    styleUrls: ['./storage-form.component.scss'],
+    selector: 'app-storage-create',
+    templateUrl: './storage-create.component.html',
+    styleUrls: ['./storage-create.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class StorageFormComponent implements OnInit {
+export class StorageCreateComponent implements OnInit {
     @HostBinding('class.storage-form') hostCssClass = true;
 
 	storage: Storage | undefined;
@@ -25,7 +24,7 @@ export class StorageFormComponent implements OnInit {
     constructor(
 			private fb: FormBuilder,
 			private service: StorageService,
-			private dialogRef: MatDialogRef<StorageFormComponent>
+			private dialogRef: MatDialogRef<StorageCreateComponent>
 	) {
         this.storageForm = this.fb.group({
             storage_space: this.fb.array([
@@ -62,7 +61,9 @@ export class StorageFormComponent implements OnInit {
 
 		this.storage = {
 			id: 0,
-			space: storageLevels.join('/')
+			storageSpace: storageLevels.join('/'),
+			createdDate: new Date,
+			items: []
 		}
 
 		this.service.addStorage(this.storage).subscribe(

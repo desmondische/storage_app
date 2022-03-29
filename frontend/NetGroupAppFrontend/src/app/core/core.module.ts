@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { HeaderComponent } from './components/header/header.component';
-import { StorageService } from './services/storage.service';
+import { StorageService } from './services/storage/storage.service';
+import { ItemService } from './services/item/item.service';
 
 @NgModule({
     declarations: [
     HeaderComponent
   ],
     imports: [CommonModule, HttpClientModule, MatToolbarModule],
-	exports: [HeaderComponent]
+	exports: [HeaderComponent],
+	providers: [StorageService, ItemService]
 })
 export class CoreModule {}

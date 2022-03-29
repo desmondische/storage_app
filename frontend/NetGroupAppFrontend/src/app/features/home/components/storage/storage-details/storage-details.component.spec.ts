@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StorageFormComponent } from './storage-form.component';
+import { StorageDetailsComponent } from './storage-details.component';
 
-describe('StorageFormComponent', () => {
-  let component: StorageFormComponent;
-  let fixture: ComponentFixture<StorageFormComponent>;
+describe('StorageDetailsComponent', () => {
+  let component: StorageDetailsComponent;
+  let fixture: ComponentFixture<StorageDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StorageFormComponent ]
+      declarations: [ StorageDetailsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StorageFormComponent);
+    fixture = TestBed.createComponent(StorageDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,80 @@
+@mixin home-table {
+	@include table-actions();
+	@include fadeIn();
+
+	table {
+		width: 1000px;
+		margin: 24px;
+		background: none;
+		border-radius: 15px;
+		box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.5), 10px 10px 15px rgba(70, 70, 70, 0.12);
+
+		th {
+			font-weight: bolder;
+
+			&.mat-header-cell {
+				text-align: center;
+			}
+		}
+
+		td.mat-cell {
+			text-align: center;
+			border-bottom-style: none;
+		}
+	}
+	
+}
+
+@mixin table-actions() {
+	.actions-group {
+		width: 90px;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-direction: row;
+		margin: 0 auto;
+
+		&-icon {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 25px;
+			width: 25px;
+			box-shadow: -2px -2px 4px rgba(255, 255, 255, 0.6), 2px 2px 4px rgba(0, 0, 0, 0.2);
+			border-radius: 50%;
+			color: #9b9b9b;
+			cursor: pointer;
+		}
+	}
+}
+
+@mixin mat-table-columns($columns) {
+	.mat-column- {
+		@each $colName, $props in $columns {
+			$width: map-get($props, "width");
+
+			&#{$colName} {
+				width: $width;
+			}
+		}
+	}
+}
+
+@mixin fadeIn() {
+	.fade-in {
+		animation: fadeIn 1s;
+		-webkit-animation: fadeIn 1s;
+		-moz-animation: fadeIn 1s;
+		-o-animation: fadeIn 1s;
+		-ms-animation: fadeIn 1s;
+	}
+
+	@keyframes fadeIn {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+}

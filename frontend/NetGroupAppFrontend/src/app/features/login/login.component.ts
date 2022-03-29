@@ -1,4 +1,3 @@
-import { StorageService } from 'src/app/core/services/storage.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -11,11 +10,10 @@ export class LoginComponent implements OnInit {
 	storages$: Observable<any[]> | undefined;
 
 
-  	constructor(private service: StorageService) { }
+  	constructor() { }
 
   	ngOnInit(): void {
-		this.storages$ = this.service.getStoragesList();
-		console.log(this.storages$.subscribe(response => console.log(response)));
+
   	}
 
 }

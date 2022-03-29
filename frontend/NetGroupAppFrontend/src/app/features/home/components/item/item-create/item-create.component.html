@@ -1,0 +1,44 @@
+<mat-card>
+	<mat-card-content>
+		<form (ngSubmit)="onSubmit()">
+			<h2>Create Item</h2>
+
+			<div>
+				<mat-form-field>
+					<input matInput type="text" [(ngModel)]="item.title" name="title" [placeholder]="'Title'">
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput type="number" [(ngModel)]="item.serialNumber" name="serialNumber"
+						[placeholder]="'Serial Number'">
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput type="number" [(ngModel)]="item.quantity" name="quantity"
+						[placeholder]="'Quantity'">
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput type="text" [(ngModel)]="item.description" name="description"
+						[placeholder]="'Description'">
+				</mat-form-field>
+				<mat-form-field>
+					<input matInput type="text" [(ngModel)]="item.image" name="image" [placeholder]="'Image'">
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Storage</mat-label>
+					<mat-select [(ngModel)]="item.storageId" name="storage_id">
+						<mat-option *ngFor="let storage of storages" [value]="storage.id">
+							{{ storage.storageSpace }}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+				<mat-form-field>
+					<textarea matInput [(ngModel)]="item.comments" name="comments"
+						[placeholder]="'Ex. It makes me feel...'"></textarea>
+				</mat-form-field>
+			</div>
+
+			<button mat-flat-button type="submit" color="primary">
+				Create Item
+			</button>
+		</form>
+	</mat-card-content>
+</mat-card>

@@ -1,24 +1,8 @@
+import { ItemCreateComponent } from './../item-create/item-create.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ItemService } from './../../../../../core/services/item/item.service';
 import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
-
-export interface PeriodicElement {
-	name: string;
-	position: number;
-	weight: number;
-	symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-	{ position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-	{ position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-	{ position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-	{ position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-	{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-	{ position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-	{ position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-	{ position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-	{ position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-	{ position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
+import { Item } from 'src/app/core/models/item/item.model';
 
 @Component({
 	selector: 'app-item-view',
@@ -29,12 +13,47 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ItemViewComponent implements OnInit {
 	@HostBinding('class.item-view') hostCssClass = true;
 
-	displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-	data = ELEMENT_DATA;
+	columns = [
+		{ columnDef: 'id', header: '#', cell: (element: Item) => `# ${element.id}` },
+		{ columnDef: 'title', header: 'Title', cell: (element: Item) => `${element.title}` },
+		{ columnDef: 'serialNumber', header: 'Serial No.', cell: (element: Item) => `${element.serialNumber}` },
+		{ columnDef: 'quantity', header: 'Quantity', cell: (element: Item) => `${element.quantity}` },
+		{ columnDef: 'description', header: 'Description', cell: (element: Item) => `${element.description}` },
+		// { columnDef: 'image', header: 'Image', cell: (element: Item) => `${element.image}` },
+		{ columnDef: 'comments', header: 'Comments', cell: (element: Item) => `${element.comments}` },
+		{ columnDef: 'storageId', header: 'Storage', cell: (element: Item) => `${element.storage?.storageSpace}` },
+		// { columnDef: 'createdDate', header: 'Created Date', cell: (element: Item) => `${element.createdDate}` },
+	];
 
-	constructor() { }
+	columnsToDisplay: string[] = this.columns.map(c => c.columnDef);
+	dataSource: Item[] = [];
+
+	constructor(
+			private service: ItemService,
+			private dialog: MatDialog
+	) { }
 
 	ngOnInit(): void {
+		this.getAllItems();
 	}
 
+	openCreateItemDialog(): void {
+		const dialogRef = this.dialog.open(ItemCreateComponent, {
+			width: '430px',
+		});
+
+		dialogRef.afterClosed().subscribe(
+			result => {
+				this.getAllItems();
+			}
+		);
+	}
+
+	removeItem(id: number): void {}
+
+	private getAllItems(): void {
+		this.service.getItemsList().subscribe(
+			data => this.dataSource = data
+		);
+	}
 }

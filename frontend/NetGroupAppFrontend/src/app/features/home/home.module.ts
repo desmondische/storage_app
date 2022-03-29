@@ -1,4 +1,3 @@
-import { StorageService } from './../../core/services/storage.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -10,14 +9,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
+
 
 import { HomeComponent } from './home.component';
-import { StorageFormComponent } from './components/storage/storage-form/storage-form.component';
+import { StorageCreateComponent } from './components/storage/storage-create/storage-create.component';
 import { StorageViewComponent } from './components/storage/storage-view/storage-view.component';
 import { ItemViewComponent } from './components/item/item-view/item-view.component';
+import { StorageDetailsComponent } from './components/storage/storage-details/storage-details.component';
+import { ItemCreateComponent } from './components/item/item-create/item-create.component';
 
 @NgModule({
-	declarations: [HomeComponent, StorageFormComponent, StorageViewComponent, ItemViewComponent],
+	declarations: [HomeComponent, StorageCreateComponent, StorageViewComponent, ItemViewComponent, StorageDetailsComponent, ItemCreateComponent],
 	imports: [
 		CommonModule,
 		MatCardModule,
@@ -29,9 +32,9 @@ import { ItemViewComponent } from './components/item/item-view/item-view.compone
 		MatIconModule,
 		MatTableModule,
 		MatDialogModule,
-		MatTabsModule
+		MatTabsModule,
+		MatSelectModule
 	],
 	exports: [],
-	providers: [StorageService]
 })
 export class HomeModule { }

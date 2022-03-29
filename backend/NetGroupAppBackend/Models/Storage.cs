@@ -9,6 +9,5 @@ namespace NetGroupAppBackend.Models
         public DateTime CreatedDate { get; set; }
 
         public virtual ICollection<Item>? Items { get; set; }
-
     }
 }

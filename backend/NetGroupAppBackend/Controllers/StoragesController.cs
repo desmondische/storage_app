@@ -21,28 +21,29 @@ namespace NetGroupAppBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Storage>>> GetStorages()
         {
-            return await _context.Storages.ToListAsync();
+
+            var storage = await _context.Storages
+                                .Include(c => c.Items)
+                                .ToListAsync();
+
+            return storage;
+        }
+
+        // GET: api/Storages/5
+        [HttpGet("spaces")]
+        public async Task<ActionResult<IEnumerable<string>>> GetStoragesSpaces()
+        {
+            var storage = await _context.Storages.Select(x => x.StorageSpace).ToListAsync();
+
+            return storage == null ? NotFound() : storage;
         }
 
         // GET: api/Storages/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Storage>> GetStorage(int id)
         {
-            var storage = await _context.Storages.FindAsync(id);
-
-            if (storage == null)
-            {
-                return NotFound();
-            }
-
-            return storage;
-        }
-
-        [HttpGet("GetCustomerOrders")]
-        public async Task<ActionResult<Storage>> GetStorageItems(int storageId)
-        {
             var storage = await _context.Storages
-                                .Where(c => c.Id == storageId)
+                                .Where(c => c.Id == id)
                                 .Include(c => c.Items)
                                 .FirstOrDefaultAsync();
 

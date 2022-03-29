@@ -1,42 +1,41 @@
-.storage-view {
-	table {
-		width: 1000px;
-		background: none; 
-		border-radius: 15px;
+@import "/src/assets/styles/home/home-views.mixin";
 
-		.icon {
-			cursor: pointer;
-			
-			&-remove {
-				color: #c27373;
-			}
-			
-			&-edit {
-				color: #7a7a7a;				
-			}
-		}
-	}
+.storage-view {
+	@include home-table();
+	@include mat-table-columns((
+    
+        id: (width: 6%),
+        storageSpace: (width: 21%),
+        items: (width: 21%),
+		createdDate: (width: 21%),
+		actions: (width: 21%)
+    
+    ));
 
 	th {
-		width: 33%;
-		font-weight: bolder;
+		width: 25%;
 	}
 
-	td {
-		mat-icon + mat-icon {
-			margin-left: 5px;
-		}
-
-		&.mat-cell {
-			border-bottom-style: none;
-		}
+	tr.example-detail-row {
+		height: 0;
 	}
 
-	.action-container {
-		padding-bottom: 16px;
+	tr.example-element-row:not(.example-expanded-row):hover {
+		background: whitesmoke;
+	}
 
-		button {
-			margin-right: 8px;
-		}
+	tr.example-element-row:not(.example-expanded-row):active {
+		background: #efefef;
+	}
+
+	.example-element-row td {
+		border-bottom-width: 0;
+	}
+
+	.storage-detail {
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 }
