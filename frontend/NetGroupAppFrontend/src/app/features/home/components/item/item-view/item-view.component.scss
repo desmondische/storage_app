@@ -1,14 +1,76 @@
-@import '/src/assets/styles/home/home-views.mixin';
+@import "/src/assets/styles/home/home-views.mixin";
 
 .item-view {
 	@include home-table();
-	// @include mat-table-columns((
-    
-    //     id: (width: 6%),
-    //     storageSpace: (width: 21%),
-    //     items: (width: 21%),
-	// 	createdDate: (width: 21%),
-	// 	actions: (width: 21%)
-    
-    // ));
+	@include home-create-button();
+	@include mat-table-columns(
+		(
+			id: (
+				width: 5%,
+			),
+			title: (
+				width: 25%,
+			),
+			serialNumber: (
+				width: 10%,
+			),
+			quantity: (
+				width: 10%,
+			),
+			storageId: (
+				width: 25%,
+			),
+			actions: (
+				width: 25%,
+			),
+		)
+	);
+
+	.item-detail {
+		overflow: hidden;
+		display: flex;
+
+		.info-group {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+			padding: 0 32px;
+		}
+
+		&-image img {
+			height: 80px;
+			width: 80px;
+			margin: 12px 0;
+		}
+
+		&-description,
+		&-comments,
+		&-date {
+			display: flex;
+			align-items: center;
+			margin-bottom: 12px;
+			text-align: left;
+
+			span {
+				margin-left: 10px;
+				word-wrap: break-word;
+			}
+
+			i {
+				color: #9b9b9b;
+			}
+		}
+
+		&-description {
+			max-width: 600px;
+		}
+
+		&-date {
+			max-width: 150px;
+		}
+	}
+
+	tr.item-detail-row {
+		height: 0;
+	}
 }

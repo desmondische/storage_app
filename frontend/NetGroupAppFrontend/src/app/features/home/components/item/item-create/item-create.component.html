@@ -19,9 +19,7 @@
 					<input matInput type="text" [(ngModel)]="item.description" name="description"
 						[placeholder]="'Description'">
 				</mat-form-field>
-				<mat-form-field>
-					<input matInput type="text" [(ngModel)]="item.image" name="image" [placeholder]="'Image'">
-				</mat-form-field>
+				<app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
 				<mat-form-field>
 					<mat-label>Storage</mat-label>
 					<mat-select [(ngModel)]="item.storageId" name="storage_id">
@@ -36,9 +34,7 @@
 				</mat-form-field>
 			</div>
 
-			<button mat-flat-button type="submit" color="primary">
-				Create Item
-			</button>
+			<button mat-flat-button type="submit" color="primary">Create Item</button>
 		</form>
 	</mat-card-content>
 </mat-card>

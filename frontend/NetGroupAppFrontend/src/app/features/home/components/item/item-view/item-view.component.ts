@@ -1,14 +1,25 @@
-import { ItemCreateComponent } from './../item-create/item-create.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ItemService } from './../../../../../core/services/item/item.service';
 import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { MatDialog } from '@angular/material/dialog';
+
+import { ItemCreateComponent } from './../item-create/item-create.component';
+import { UploadService } from 'src/app/shared/services/upload/upload.service';
+import { ItemService } from 'src/app/core/services/item/item.service';
 import { Item } from 'src/app/core/models/item/item.model';
 
 @Component({
 	selector: 'app-item-view',
 	templateUrl: './item-view.component.html',
 	styleUrls: ['./item-view.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	animations: [
+		trigger('detailExpand', [
+			state('collapsed', style({ height: '0px', minHeight: '0' })),
+			state('expanded', style({ height: '*' })),
+			transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+		]),
+	],
+	providers: [UploadService]
 })
 export class ItemViewComponent implements OnInit {
 	@HostBinding('class.item-view') hostCssClass = true;
@@ -18,19 +29,17 @@ export class ItemViewComponent implements OnInit {
 		{ columnDef: 'title', header: 'Title', cell: (element: Item) => `${element.title}` },
 		{ columnDef: 'serialNumber', header: 'Serial No.', cell: (element: Item) => `${element.serialNumber}` },
 		{ columnDef: 'quantity', header: 'Quantity', cell: (element: Item) => `${element.quantity}` },
-		{ columnDef: 'description', header: 'Description', cell: (element: Item) => `${element.description}` },
-		// { columnDef: 'image', header: 'Image', cell: (element: Item) => `${element.image}` },
-		{ columnDef: 'comments', header: 'Comments', cell: (element: Item) => `${element.comments}` },
 		{ columnDef: 'storageId', header: 'Storage', cell: (element: Item) => `${element.storage?.storageSpace}` },
-		// { columnDef: 'createdDate', header: 'Created Date', cell: (element: Item) => `${element.createdDate}` },
 	];
 
-	columnsToDisplay: string[] = this.columns.map(c => c.columnDef);
-	dataSource: Item[] = [];
+	dataSource!: Item[];
+	expandedData!: Item;
+	columnsToDisplay: string[] = this.columns.map(c => c.columnDef).concat('actions');
 
 	constructor(
-			private service: ItemService,
-			private dialog: MatDialog
+		private service: ItemService,
+		private uploadService: UploadService,
+		private dialog: MatDialog
 	) { }
 
 	ngOnInit(): void {
@@ -49,7 +58,17 @@ export class ItemViewComponent implements OnInit {
 		);
 	}
 
-	removeItem(id: number): void {}
+	displayImage(path: string): string {
+		return `${this.uploadService.baseUrl}/${path}`;
+	}
+
+	removeItem(id: number): void {
+		this.service.removeItem(id).subscribe(
+			res => {
+				this.getAllItems();
+			}
+		)
+	}
 
 	private getAllItems(): void {
 		this.service.getItemsList().subscribe(

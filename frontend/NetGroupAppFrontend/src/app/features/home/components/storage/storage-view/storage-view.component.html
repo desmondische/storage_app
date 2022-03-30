@@ -1,15 +1,9 @@
-<div class="action-container">
-	<button mat-flat-button (click)="openCreateStorageDialog()">
-		Add data
-	</button>
-</div>
-
 <table mat-table [dataSource]="dataSource" class="fade-in">
 
 	<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
 		<th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
 		<td mat-cell *matCellDef="let row; let i = index">{{ (column.header === 'Created Date') ? (column.cell(row) |
-			date) : (column.header === 'No.') ? ('# ' + (i + 1)) : column.cell(row) }}</td>
+			date) : (column.header === '#') ? ('# ' + (i + 1)) : column.cell(row) }}</td>
 	</ng-container>
 
 	<!-- Actions Column -->
@@ -17,30 +11,19 @@
 		<th mat-header-cell *matHeaderCellDef> Actions </th>
 		<td mat-cell *matCellDef="let storage">
 			<div class="actions-group">
-				<i class="fa-solid fa-info actions-group-icon"
-					(click)="expandedData = expandedData === storage ? null : storage"></i>
+				<i class="fa-solid fa-info actions-group-icon"></i>
 				<i class="fa-solid fa-pen actions-group-icon" (click)="openEditDialog()"></i>
 				<i class="fa-solid fa-trash actions-group-icon" (click)="removeStorage(storage.id)"></i>
 			</div>
 		</td>
 	</ng-container>
 
-	<!-- <ng-container matColumnDef="expandedStorageDetail">
-		<td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-			<div *ngFor="let item of element.items" class="storage-detail"
-				[@detailExpand]="element == expandedData ? 'expanded' : 'collapsed'">
-				<div class="example-element-position"> {{item.id }} </div>
-				<div class="example-element-symbol"> {{ item.title }} </div>
-				<div class="example-element-name"> {{ item.image }} </div>
-				<div class="example-element-weight"> {{ item.serialNumber }} </div>
-				<div class="example-element-weight"> {{ item.createdDate }} </div>
-			</div>
-		</td>
-	</ng-container> -->
-
 	<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-	<!-- <tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="example-element-row"
-		[class.example-expanded-row]="expandedData === element">
-	</tr> -->
 	<tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
 </table>
+
+<div class="action-container fade-in">
+	<button mat-flat-button type="button" class="icon" (click)="openCreateStorageDialog()">
+		<i class="fa-solid fa-xl fa-plus"></i>
+	</button>
+</div>

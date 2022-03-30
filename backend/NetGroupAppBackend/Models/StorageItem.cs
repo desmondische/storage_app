@@ -8,9 +8,9 @@ namespace NetGroupAppBackend.Models
         public int StorageId { get; set; }
 
         [JsonIgnore]
-        public virtual Item Item { get; set; }
+        public virtual Item? Item { get; set; }
         [JsonIgnore]
-        public virtual Storage Storage { get; set; }
+        public virtual Storage? Storage { get; set; }
 
     }
 }

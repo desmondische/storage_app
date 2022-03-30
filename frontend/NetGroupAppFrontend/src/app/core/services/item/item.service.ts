@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpEventType } from '@angular/common/http';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Item } from '../../models/item/item.model';
 
@@ -18,7 +18,7 @@ export class ItemService {
 		return this.http.post<Item>(this.requestUrl, data);
 	}
 
-	removeItem(id: Item): Observable<Item> {
+	removeItem(id: number): Observable<Item> {
 		return this.http.delete<Item>(this.requestUrl + id);
 	}
 }

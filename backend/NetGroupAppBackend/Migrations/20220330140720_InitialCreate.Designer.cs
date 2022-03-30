@@ -12,7 +12,7 @@ using NetGroupAppBackend.Data;
 namespace NetGroupAppBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220329184240_InitialCreate")]
+    [Migration("20220330140720_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,7 +42,7 @@ namespace NetGroupAppBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Image")
+                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

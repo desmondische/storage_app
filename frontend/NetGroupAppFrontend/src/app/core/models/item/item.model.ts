@@ -4,10 +4,10 @@ export interface Item {
 	serialNumber: number;
 	quantity: number;
 	description: string;
-	image: string;
+	imagePath: string;
 	comments?: string;
-	storageId: number;
-	createdDate: Date;
+	storageId?: number;
+	createdDate?: Date;
 	storage?: {
 		storageSpace: string;
 	}

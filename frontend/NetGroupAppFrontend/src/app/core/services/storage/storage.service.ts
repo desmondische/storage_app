@@ -14,10 +14,6 @@ export class StorageService {
 		return this.http.get<Storage[]>(this.requestUrl);
 	}
 
-	getStoragesSpacesList(): Observable<string[]> {
-		return this.http.get<string[]>(this.requestUrl + 'spaces');
-	}
-
 	addStorage(data: Storage): Observable<Storage> {
 		return this.http.post<Storage>(this.requestUrl, data);
 	}

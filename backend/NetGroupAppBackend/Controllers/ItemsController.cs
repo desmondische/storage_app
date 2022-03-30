@@ -1,13 +1,9 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetGroupAppBackend.Data;
 using NetGroupAppBackend.Models;
+using System.Net.Http.Headers;
 
 namespace NetGroupAppBackend.Controllers
 {
@@ -16,10 +12,12 @@ namespace NetGroupAppBackend.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly DataContext _context;
+        public IWebHostEnvironment _environment;
 
-        public ItemsController(DataContext context)
+        public ItemsController(DataContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            _environment = hostingEnvironment;
         }
 
         // GET: api/Items
@@ -32,6 +30,21 @@ namespace NetGroupAppBackend.Controllers
 
             return item;
         }
+
+        //[HttpGet("with-storage-spaces")]
+        //public async Task<List<ItemVM>> GetItemsWithStorageSpaces()
+        //{
+        //    var item = await _context.Items.Select(item => new ItemVM()
+        //    {
+        //        Title = item.Title,
+        //        Storage = new StorageVM()
+        //        {
+        //            StorageSpace = item.Storage.StorageSpace
+        //        }
+        //    }).ToListAsync();
+
+        //    return item;
+        //}
 
         // GET: api/Items/5
         [HttpGet("{id}")]
@@ -66,7 +79,6 @@ namespace NetGroupAppBackend.Controllers
             return NoContent();
         }
 
-        // POST: api/Items
         [HttpPost]
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
@@ -75,6 +87,49 @@ namespace NetGroupAppBackend.Controllers
 
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
+
+        // POST: api/Items
+        //[HttpPost]
+        //public async Task<ActionResult<ItemVM>> PostItem([FromForm] ItemVM item)
+        //{
+        //    var files = HttpContext.Request.Form.Files;
+        //    string fileName = null;
+
+        //    if (files != null && files.Count == 1)
+        //    {
+        //        foreach (var file in files)
+        //        {
+        //            FileInfo fileInfo = new(file.FileName);
+        //            fileName = "image_" + DateTime.Now.TimeOfDay.Milliseconds + fileInfo.Extension;
+        //            var path = Path.Combine("", _environment.ContentRootPath + "\\Images\\" + fileName);
+        //            using var stream = new FileStream(path, FileMode.Create);
+        //            file.CopyTo(stream);
+        //        }
+        //    }
+
+        //    string fileName = null;
+        //    if (item.ImagePath != null)
+        //    {
+        //        var uploadDir = Path.Combine("", _environment.ContentRootPath + "\\Images\\");
+        //        fileName = Path.Combine("image_" + DateTime.Now.TimeOfDay.Milliseconds + item.ImagePath.FileName);
+        //        var filePath = Path.Combine(uploadDir, fileName);
+        //        using var fileStream = new FileStream(filePath, FileMode.Create);
+        //        item.ImagePath.CopyTo(fileStream);
+        //    }
+
+        //    Item _item = new()
+        //    {
+        //        Title = item.Title,
+        //        SerialNumber = item.SerialNumber,
+        //        Quantity = item.Quantity,
+        //        Description = item.Description,
+        //        ImagePath = fileName
+        //    };
+        //    _context.Items.Add(_item);
+        //    await _context.SaveChangesAsync();
+
+        //    return CreatedAtAction("GetItem", new { id = _item.Id }, item);
+        //}
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]

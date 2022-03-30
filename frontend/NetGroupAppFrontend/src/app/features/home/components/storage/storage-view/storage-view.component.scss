@@ -2,40 +2,28 @@
 
 .storage-view {
 	@include home-table();
-	@include mat-table-columns((
-    
-        id: (width: 6%),
-        storageSpace: (width: 21%),
-        items: (width: 21%),
-		createdDate: (width: 21%),
-		actions: (width: 21%)
-    
-    ));
+	@include home-create-button();
+	@include mat-table-columns(
+		(
+			id: (
+				width: 5%,
+			),
+			storageSpace: (
+				width: 22%,
+			),
+			items: (
+				width: 21%,
+			),
+			createdDate: (
+				width: 21%,
+			),
+			actions: (
+				width: 21%,
+			),
+		)
+	);
 
 	th {
 		width: 25%;
-	}
-
-	tr.example-detail-row {
-		height: 0;
-	}
-
-	tr.example-element-row:not(.example-expanded-row):hover {
-		background: whitesmoke;
-	}
-
-	tr.example-element-row:not(.example-expanded-row):active {
-		background: #efefef;
-	}
-
-	.example-element-row td {
-		border-bottom-width: 0;
-	}
-
-	.storage-detail {
-		overflow: hidden;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
 	}
 }

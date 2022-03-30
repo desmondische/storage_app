@@ -10,4 +10,9 @@ namespace NetGroupAppBackend.Models
 
         public virtual ICollection<Item>? Items { get; set; }
     }
+
+    public class StorageVM
+    {
+        public string StorageSpace { get; set; } = string.Empty;
+    }
 }
