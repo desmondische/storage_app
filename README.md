@@ -1,5 +1,7 @@
 # netgroup_app
 
+0. .NET Core 6.0 + Angular 13
+
 1.  Clone repository
 
 2.  Server port is :7230
