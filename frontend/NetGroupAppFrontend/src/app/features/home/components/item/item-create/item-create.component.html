@@ -1,40 +1,51 @@
 <mat-card>
 	<mat-card-content>
-		<form (ngSubmit)="onSubmit()">
-			<h2>Create Item</h2>
+		<form [formGroup]="form" (ngSubmit)="onSubmit()">
+			<h2 *ngIf="item.id == 0; else edit">Create Item</h2>
+			<ng-template #edit>
+				<h2>Edit Item</h2>
+			</ng-template>
 
 			<div>
 				<mat-form-field>
-					<input matInput type="text" [(ngModel)]="item.title" name="title" [placeholder]="'Title'">
+					<input matInput type="text" formControlName="title" [placeholder]="'Title'" [value]="item.title"
+						[required]="true">
 				</mat-form-field>
 				<mat-form-field>
-					<input matInput type="number" [(ngModel)]="item.serialNumber" name="serialNumber"
-						[placeholder]="'Serial Number'">
+					<input matInput type="text" formControlName="serialNumber" [placeholder]="'Serial No.'"
+						[value]="item.serialNumber" [required]="true">
 				</mat-form-field>
 				<mat-form-field>
-					<input matInput type="number" [(ngModel)]="item.quantity" name="quantity"
-						[placeholder]="'Quantity'">
+					<input matInput type="number" formControlName="quantity" [placeholder]="'Quantity'"
+						[value]="item.quantity" [required]="true">
 				</mat-form-field>
 				<mat-form-field>
-					<input matInput type="text" [(ngModel)]="item.description" name="description"
-						[placeholder]="'Description'">
+					<input matInput type="text" formControlName="description" [placeholder]="'Description'"
+						[value]="item.description" [required]="true">
 				</mat-form-field>
 				<app-upload (onUploadFinished)="uploadFinished($event)"></app-upload>
 				<mat-form-field>
-					<mat-label>Storage</mat-label>
-					<mat-select [(ngModel)]="item.storageId" name="storage_id">
+					<mat-select formControlName="storageId" [value]=" item.storageId" [placeholder]="'Storage'"
+						[required]="true">
 						<mat-option *ngFor="let storage of storages" [value]="storage.id">
 							{{ storage.storageSpace }}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
 				<mat-form-field>
-					<textarea matInput [(ngModel)]="item.comments" name="comments"
-						[placeholder]="'Ex. It makes me feel...'"></textarea>
+					<textarea matInput formControlName="comments" [placeholder]="'Ex. It makes me feel...'"
+						[value]="item.comments">
+					</textarea>
 				</mat-form-field>
 			</div>
+			<mat-error *ngIf="showWarning$ | async">Required fields are not filled</mat-error>
 
-			<button mat-flat-button type="submit" color="primary">Create Item</button>
+			<button mat-flat-button type="submit" color="primary" *ngIf="item.id == 0; else update">
+				Create Item
+			</button>
+			<ng-template #update>
+				<button mat-flat-button type="submit" color="primary">Update Item</button>
+			</ng-template>
 		</form>
 	</mat-card-content>
 </mat-card>

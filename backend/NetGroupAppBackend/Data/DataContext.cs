@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetGroupAppBackend.Controllers;
 using NetGroupAppBackend.Models;
 
 namespace NetGroupAppBackend.Data
@@ -29,11 +30,6 @@ namespace NetGroupAppBackend.Data
                     .HasForeignKey(x => x.StorageId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
-
-            //modelBuilder
-            //    .Entity<StorageItem>()
-            //    .ToTable("StorageItems")
-            //    .HasKey(key => new { key.ItemId, key.StorageId });
         }
     }
 }

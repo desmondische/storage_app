@@ -1,12 +1,14 @@
 export interface Item {
 	id: number;
+	userId?: string;
 	title: string;
-	serialNumber: number;
-	quantity: number;
 	description: string;
 	imagePath: string;
+	storageId: number;
+	
+	quantity?: number;
+	serialNumber?: string;
 	comments?: string;
-	storageId?: number;
 	createdDate?: Date;
 	storage?: {
 		storageSpace: string;

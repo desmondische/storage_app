@@ -1,29 +1,46 @@
-<table mat-table [dataSource]="dataSource" class="fade-in">
+<div class="storage-view-container">
+	<div class="filter-container fade-in">
+		<mat-form-field>
+			<input matInput (keyup)="applyFilter($event)" #input>
+			<mat-icon matSuffix><i class="fa-solid fa-magnifying-glass"></i></mat-icon>
+		</mat-form-field>
+	</div>
 
-	<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-		<th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
-		<td mat-cell *matCellDef="let row; let i = index">{{ (column.header === 'Created Date') ? (column.cell(row) |
-			date) : (column.header === '#') ? ('# ' + (i + 1)) : column.cell(row) }}</td>
-	</ng-container>
+	<table mat-table [dataSource]="dataSource" class="fade-in">
 
-	<!-- Actions Column -->
-	<ng-container matColumnDef="actions">
-		<th mat-header-cell *matHeaderCellDef> Actions </th>
-		<td mat-cell *matCellDef="let storage">
-			<div class="actions-group">
-				<i class="fa-solid fa-info actions-group-icon"></i>
-				<i class="fa-solid fa-pen actions-group-icon" (click)="openEditDialog()"></i>
-				<i class="fa-solid fa-trash actions-group-icon" (click)="removeStorage(storage.id)"></i>
-			</div>
-		</td>
-	</ng-container>
+		<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+			<th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+			<td mat-cell *matCellDef="let row; let i = index">{{ (column.header === 'Created Date') ? (column.cell(row)
+				| date) : (column.header === '#') ? ('# ' + (i + 1)) : column.cell(row) }}</td>
+		</ng-container>
 
-	<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-	<tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
-</table>
+		<!-- Actions Column -->
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef> Actions </th>
+			<td mat-cell *matCellDef="let storage">
+				<div class="actions-group">
+					<i class="fa-solid fa-info actions-group-icon" (click)="openStorageDetailsDialog(storage.id)"></i>
+					<i class="fa-solid fa-pen actions-group-icon" (click)="openCreateEditStorageDialog(storage.id)"></i>
+					<i class="fa-solid fa-trash actions-group-icon" (click)="removeStorage(storage.id)"></i>
+				</div>
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+		<tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>
+
+	</table>
+
+	<div *ngIf="!dataSource.data.length" class="no-records fade-in">No records found</div>
+
+	<div [hidden]="!dataSource.data.length">
+		<mat-paginator [pageSizeOptions]="[5, 10, 25]" aria-label="Select page of storages">
+		</mat-paginator>
+	</div>
+</div>
 
 <div class="action-container fade-in">
-	<button mat-flat-button type="button" class="icon" (click)="openCreateStorageDialog()">
+	<button type="button" class="icon" (click)="openCreateEditStorageDialog()">
 		<i class="fa-solid fa-xl fa-plus"></i>
 	</button>
 </div>

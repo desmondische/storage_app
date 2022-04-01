@@ -1,10 +1,10 @@
-<input type="file" #file placeholder="Choose file..." (change)="uploadFile(file.files)" accept="image/png, image/jpeg">
-
+<input type="file" #file placeholder="Choose file..." (change)="uploadFile(file.files)"
+	accept="image/png, image/jpeg">
 <div>
 	<span *ngIf="progress! > 0">
 		{{ progress }}%
 	</span>
-	<span *ngIf="message">
+	<span *ngIf="message" style="color: green">
 		{{ message }}
 	</span>
 </div>

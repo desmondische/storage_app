@@ -1,8 +1,17 @@
 <mat-card>
 	<mat-card-content>
 		<form [formGroup]="storageForm" (ngSubmit)="onSubmit()">
-			<h2>Create Storage Space</h2>
+			<h2 *ngIf="storage.id == 0; else asd">Create Storage</h2>
+			<ng-template #asd>
+				<h2>Edit Storage</h2>
+			</ng-template>
+
+
 			<div formArrayName="storage_space">
+
+				<mat-form-field *ngIf="storage.id != 0" appearance="legacy">
+					<input matInput type="text" [value]="storage.storageSpace" [disabled]="true" />
+				</mat-form-field>
 
 				<div *ngFor="let level of storageSpace.controls; let i = index" [formGroupName]="i">
 
@@ -18,9 +27,12 @@
 				</div>
 
 			</div>
-			<button mat-flat-button type="submit" color="primary">
+			<button mat-flat-button type="submit" color="primary" *ngIf="storage.id == 0; else update">
 				Create Storage
 			</button>
+			<ng-template #update>
+				<button mat-flat-button type="submit" color="primary">Update Storage</button>
+			</ng-template>
 		</form>
 	</mat-card-content>
 </mat-card>

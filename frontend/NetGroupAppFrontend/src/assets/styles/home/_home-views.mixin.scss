@@ -1,13 +1,31 @@
+@import '/src/assets/styles/animations/animations.mixin';
+
 @mixin home-table {
 	@include table-actions();
 	@include fadeIn();
 
-	table {
-		width: 1000px;
+	&-container {
 		margin: 24px;
-		background: none;
 		border-radius: 15px;
 		box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.5), 10px 10px 15px rgba(70, 70, 70, 0.12);
+
+		.filter-container {
+			i {
+				font-size: 14px;
+				color: #9b9b9b;
+			}
+
+			.mat-form-field {
+				display: block;
+				width: 20%;
+				margin-left: 24px;
+			}
+		}
+	}
+
+	table {
+		width: 1000px;
+		background: none;
 
 		th {
 			font-weight: bolder;
@@ -22,14 +40,15 @@
 			text-align: center;
 			border-bottom-style: none;
 		}
+	}
 
-		.no-records {
-			height: 48px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: white;
-		}
+	.no-records {
+		height: 64px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		color: #9b9b9b;
 	}
 }
 
@@ -72,7 +91,7 @@
 	cursor: pointer;
 }
 
-@mixin home-create-button() {
+@mixin views-create-button() {
 	.action-container {
 		display: flex;
 		align-items: center;
@@ -93,25 +112,6 @@
 					inset -10px -10px 15px rgb(255 255 255 / 60%), inset 10px 10px 15px rgb(0 0 0 / 7%);
 				color: #15e38a;
 			}
-		}
-	}
-}
-
-@mixin fadeIn() {
-	.fade-in {
-		animation: fadeIn 1.5s;
-		-webkit-animation: fadeIn 1.5s;
-		-moz-animation: fadeIn 1.5s;
-		-o-animation: fadeIn 1.5s;
-		-ms-animation: fadeIn 1.5s;
-	}
-
-	@keyframes fadeIn {
-		0% {
-			opacity: 0;
-		}
-		100% {
-			opacity: 1;
 		}
 	}
 }

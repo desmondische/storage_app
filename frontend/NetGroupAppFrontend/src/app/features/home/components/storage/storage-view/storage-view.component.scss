@@ -2,7 +2,7 @@
 
 .storage-view {
 	@include home-table();
-	@include home-create-button();
+	@include views-create-button();
 	@include mat-table-columns(
 		(
 			id: (

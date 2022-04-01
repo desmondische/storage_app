@@ -1,63 +1,74 @@
-<table mat-table [dataSource]="dataSource" multiTemplateDataRows class="fade-in">
+<div class="item-view-container">
+	<div class="filter-container fade-in">
+		<mat-form-field>
+			<input matInput (keyup)="applyFilter($event)" #input>
+			<mat-icon matSuffix><i class="fa-solid fa-magnifying-glass"></i></mat-icon>
+		</mat-form-field>
+	</div>
 
-	<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
-		<th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
-		<td mat-cell *matCellDef="let row; let i = dataIndex">{{ (column.header === 'Created Date') ? (column.cell(row)
-			| date) : (column.header === '#') ? ('# ' + (i + 1)) : column.cell(row) }}</td>
-	</ng-container>
+	<table mat-table [dataSource]="dataSource" multiTemplateDataRows class="fade-in">
 
-	<!-- Actions Column -->
-	<ng-container matColumnDef="actions">
-		<th mat-header-cell *matHeaderCellDef> Actions </th>
-		<td mat-cell *matCellDef="let item">
-			<div class="actions-group">
-				<i class="fa-solid fa-info actions-group-icon"
-					(click)="expandedData = expandedData === item ? null : item"></i>
-				<i class="fa-solid fa-pen actions-group-icon"></i>
-				<i class="fa-solid fa-trash actions-group-icon" (click)="removeItem(item.id)"></i>
-			</div>
-		</td>
-	</ng-container>
+		<ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+			<th mat-header-cell *matHeaderCellDef>{{ column.header }}</th>
+			<td mat-cell *matCellDef="let row; let i = dataIndex">{{ (column.header === '#') ? ('# ' + (i + 1)) :
+				column.cell(row) }}</td>
+		</ng-container>
 
-	<!-- Item Details -->
-	<ng-container matColumnDef="expandedItemDetail">
-		<td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
-			<div class="item-detail" [@detailExpand]="element == expandedData ? 'expanded' : 'collapsed'">
-				<div class="item-detail-image">
-					<img [src]="displayImage(element.imagePath)">
+		<!-- Actions Column -->
+		<ng-container matColumnDef="actions">
+			<th mat-header-cell *matHeaderCellDef> Actions </th>
+			<td mat-cell *matCellDef="let item">
+				<div class="actions-group">
+					<i class="fa-solid fa-info actions-group-icon"
+						(click)="expandedData = expandedData === item ? null : item"></i>
+					<i class="fa-solid fa-pen actions-group-icon" (click)="openCreateEditItemDialog(item.id)"></i>
+					<i class="fa-solid fa-trash actions-group-icon" (click)="removeItem(item.id)"></i>
 				</div>
-				<div class="info-group">
-					<div class="item-detail-description">
-						<i class="fa-solid fa-highlighter"></i>
-						<span>{{ element.description }}</span>
+			</td>
+		</ng-container>
+
+		<!-- Item Details -->
+		<ng-container matColumnDef="expandedItemDetail">
+			<td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+				<div class="item-details" [@detailExpand]="element == expandedData ? 'expanded' : 'collapsed'">
+					<div class="item-details-image">
+						<img [src]="displayImage(element.imagePath)">
 					</div>
-					<div *ngIf="element.comments" class="item-detail-comments">
-						<p>{{ element.comments }} </p>
-					</div>
-					<div class="item-detail-date">
-						<i class="fa-solid fa-calendar-plus"></i>
-						<span>{{ element.createdDate | date }}</span>
+					<div class="info-group">
+						<div class="item-details-description">
+							<i class="fa-solid fa-highlighter"></i>
+							<span>{{ element.description }}</span>
+						</div>
+						<div *ngIf="element.comments" class="item-details-comments">
+							<i class="fa-solid fa-comment"></i>
+							<span>{{ element.comments }} </span>
+						</div>
+						<div class="item-details-date">
+							<i class="fa-solid fa-calendar-plus"></i>
+							<span>{{ element.createdDate | date }}</span>
+						</div>
 					</div>
 				</div>
-			</div>
-		</td>
-	</ng-container>
+			</td>
+		</ng-container>
 
-	<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-	<tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="item-detail-element-row"
-		[class.item-detail-expanded-row]="expandedData === element">
-	</tr>
-	<tr mat-row *matRowDef="let row; columns: ['expandedItemDetail']" class="item-detail-row"></tr>
+		<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+		<tr mat-row *matRowDef="let element; columns: columnsToDisplay;" class="item-detail-element-row"
+			[class.item-detail-expanded-row]="expandedData === element">
+		</tr>
+		<tr mat-row *matRowDef="let row; columns: ['expandedItemDetail']" class="item-detail-row"></tr>
 
-	<tr class="mat-row" *matNoDataRow>
-		<div>
-			<td class="mat-cell">No data found</td>
-		</div>
-	</tr>
-</table>
+	</table>
+
+	<div *ngIf="!dataSource.data.length" class="no-records fade-in">No records found</div>
+
+	<div [hidden]="!dataSource.data.length">
+		<mat-paginator [pageSizeOptions]="[5, 10, 25]" aria-label="Select page of items"></mat-paginator>
+	</div>
+</div>
 
 <div class="action-container fade-in">
-	<button mat-flat-button type="button" class="icon" (click)="openCreateItemDialog()">
+	<button type="button" class="icon" (click)="openCreateEditItemDialog()">
 		<i class="fa-solid fa-xl fa-plus"></i>
 	</button>
 </div>

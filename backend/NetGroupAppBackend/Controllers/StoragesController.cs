@@ -1,11 +1,15 @@
 ﻿#nullable disable
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetGroupAppBackend.Data;
 using NetGroupAppBackend.Models;
+using NetGroupAppBackend.Models.DTOs;
+using System.Security.Claims;
 
 namespace NetGroupAppBackend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StoragesController : ControllerBase
@@ -23,19 +27,11 @@ namespace NetGroupAppBackend.Controllers
         {
 
             var storage = await _context.Storages
-                                .Include(c => c.Items)
+                                .Where(x => x.UserId == GetUserId())
+                                .Include(x => x.Items)
                                 .ToListAsync();
 
             return storage;
-        }
-
-        // GET: api/Storages/5
-        [HttpGet("spaces")]
-        public async Task<ActionResult<IEnumerable<string>>> GetStoragesSpaces()
-        {
-            var storage = await _context.Storages.Select(x => x.StorageSpace).ToListAsync();
-
-            return storage == null ? NotFound() : storage;
         }
 
         // GET: api/Storages/5
@@ -43,7 +39,7 @@ namespace NetGroupAppBackend.Controllers
         public async Task<ActionResult<Storage>> GetStorage(int id)
         {
             var storage = await _context.Storages
-                                .Where(c => c.Id == id)
+                                .Where(c => c.Id == id && c.UserId == GetUserId())
                                 .Include(c => c.Items)
                                 .FirstOrDefaultAsync();
 
@@ -60,6 +56,7 @@ namespace NetGroupAppBackend.Controllers
                 return BadRequest();
             }
 
+            storage.UserId = GetUserId();
             _context.Entry(storage).State = EntityState.Modified;
 
             try
@@ -86,6 +83,7 @@ namespace NetGroupAppBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Storage>> PostStorage(Storage storage)
         {
+            storage.UserId = GetUserId();
             _context.Storages.Add(storage);
             await _context.SaveChangesAsync();
 
@@ -111,6 +109,12 @@ namespace NetGroupAppBackend.Controllers
         private bool StorageExists(int id)
         {
             return _context.Storages.Any(e => e.Id == id);
+        }
+        private string GetUserId()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity!.FindFirst(ClaimTypes.Name)!.Value;
+            return userId;
         }
     }
 }

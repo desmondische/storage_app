@@ -1,12 +1,15 @@
 ﻿#nullable disable
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetGroupAppBackend.Data;
 using NetGroupAppBackend.Models;
-using System.Net.Http.Headers;
+using NetGroupAppBackend.Models.DTOs;
+using System.Security.Claims;
 
 namespace NetGroupAppBackend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase
@@ -14,7 +17,10 @@ namespace NetGroupAppBackend.Controllers
         private readonly DataContext _context;
         public IWebHostEnvironment _environment;
 
-        public ItemsController(DataContext context, IWebHostEnvironment hostingEnvironment)
+        public ItemsController(
+            DataContext context, 
+            IWebHostEnvironment hostingEnvironment
+            )
         {
             _context = context;
             _environment = hostingEnvironment;
@@ -22,39 +28,39 @@ namespace NetGroupAppBackend.Controllers
 
         // GET: api/Items
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Item>>> GetItems()
+        public async Task<ActionResult<IEnumerable<ItemDTO>>> GetItems()
         {
             var item = await _context.Items
-                                .Include(c => c.Storage)
+                                .Where(x => x.UserId == GetUserId())
+                                .Select(n => new ItemDTO()
+                                {
+                                    Title = n.Title,
+                                    SerialNumber = n.SerialNumber,
+                                    Quantity = n.Quantity,
+                                    Description = n.Description,
+                                    ImagePath = n.ImagePath,
+                                    Comments = n.Comments,
+                                    CreatedDate = n.CreatedDate,
+                                    Storage = new StorageDTO()
+                                    {
+                                        StorageSpace = n.Storage.StorageSpace
+                                    }
+                                })
                                 .ToListAsync();
 
             return item;
         }
 
-        //[HttpGet("with-storage-spaces")]
-        //public async Task<List<ItemVM>> GetItemsWithStorageSpaces()
-        //{
-        //    var item = await _context.Items.Select(item => new ItemVM()
-        //    {
-        //        Title = item.Title,
-        //        Storage = new StorageVM()
-        //        {
-        //            StorageSpace = item.Storage.StorageSpace
-        //        }
-        //    }).ToListAsync();
-
-        //    return item;
-        //}
-
         // GET: api/Items/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Item>> GetItem(int id)
         {
-            var item = await _context.Items.FindAsync(id);
+            var item = await _context.Items
+                                    .Where(c => c.Id == id && c.UserId == GetUserId())
+                                    .Include(c => c.Storage)
+                                    .FirstOrDefaultAsync();
 
-            if (item == null) return NotFound();
-
-            return item;
+            return item == null ? NotFound() : item;
         }
 
         // PUT: api/Items/5
@@ -63,6 +69,7 @@ namespace NetGroupAppBackend.Controllers
         {
             if (id != item.Id) return BadRequest();
 
+            item.UserId = GetUserId();
             _context.Entry(item).State = EntityState.Modified;
 
             try
@@ -82,54 +89,13 @@ namespace NetGroupAppBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
+
+            item.UserId = GetUserId();
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetItem", new { id = item.Id }, item);
         }
-
-        // POST: api/Items
-        //[HttpPost]
-        //public async Task<ActionResult<ItemVM>> PostItem([FromForm] ItemVM item)
-        //{
-        //    var files = HttpContext.Request.Form.Files;
-        //    string fileName = null;
-
-        //    if (files != null && files.Count == 1)
-        //    {
-        //        foreach (var file in files)
-        //        {
-        //            FileInfo fileInfo = new(file.FileName);
-        //            fileName = "image_" + DateTime.Now.TimeOfDay.Milliseconds + fileInfo.Extension;
-        //            var path = Path.Combine("", _environment.ContentRootPath + "\\Images\\" + fileName);
-        //            using var stream = new FileStream(path, FileMode.Create);
-        //            file.CopyTo(stream);
-        //        }
-        //    }
-
-        //    string fileName = null;
-        //    if (item.ImagePath != null)
-        //    {
-        //        var uploadDir = Path.Combine("", _environment.ContentRootPath + "\\Images\\");
-        //        fileName = Path.Combine("image_" + DateTime.Now.TimeOfDay.Milliseconds + item.ImagePath.FileName);
-        //        var filePath = Path.Combine(uploadDir, fileName);
-        //        using var fileStream = new FileStream(filePath, FileMode.Create);
-        //        item.ImagePath.CopyTo(fileStream);
-        //    }
-
-        //    Item _item = new()
-        //    {
-        //        Title = item.Title,
-        //        SerialNumber = item.SerialNumber,
-        //        Quantity = item.Quantity,
-        //        Description = item.Description,
-        //        ImagePath = fileName
-        //    };
-        //    _context.Items.Add(_item);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetItem", new { id = _item.Id }, item);
-        //}
 
         // DELETE: api/Items/5
         [HttpDelete("{id}")]
@@ -147,6 +113,12 @@ namespace NetGroupAppBackend.Controllers
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.Id == id);
+        }
+        private string GetUserId()
+        {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var userId = claimsIdentity!.FindFirst(ClaimTypes.Name)!.Value;
+            return userId;
         }
     }
 }

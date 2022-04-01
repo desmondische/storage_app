@@ -18,6 +18,18 @@ body {
 	font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
 
-.mat-flat-button {
+.mat-dialog-container {
+	background: transparent;
+	box-shadow: none;
+
+	.mat-card {
+		padding: 32px;
+		border-radius: 15px;
+		box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.3), 10px 10px 15px rgba(70, 70, 70, 0.6);
+	}
+}
+
+.mat-paginator {
+	margin-top: 24px;
 	background-color: transparent;
 }

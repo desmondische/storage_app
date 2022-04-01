@@ -12,8 +12,8 @@ using NetGroupAppBackend.Data;
 namespace NetGroupAppBackend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220330140720_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220401014045_database")]
+    partial class database
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,14 +33,16 @@ namespace NetGroupAppBackend.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Comments")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("ImagePath")
                         .IsRequired()
@@ -49,13 +51,19 @@ namespace NetGroupAppBackend.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SerialNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
 
-                    b.Property<int?>("StorageId")
+                    b.Property<int>("StorageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -81,6 +89,10 @@ namespace NetGroupAppBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Storage", (string)null);
@@ -91,7 +103,8 @@ namespace NetGroupAppBackend.Migrations
                     b.HasOne("NetGroupAppBackend.Models.Storage", "Storage")
                         .WithMany("Items")
                         .HasForeignKey("StorageId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Storage");
                 });

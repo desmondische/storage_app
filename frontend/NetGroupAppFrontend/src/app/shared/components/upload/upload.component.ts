@@ -1,6 +1,6 @@
 import { UploadService } from '../../services/upload/upload.service';
 import { HttpEventType } from '@angular/common/http';
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation, HostBinding } from '@angular/core';
 
 @Component({
 	selector: 'app-upload',
@@ -10,6 +10,7 @@ import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@ang
 	providers: [UploadService]
 })
 export class UploadComponent implements OnInit {
+	@HostBinding('class.upload-container') hostCssClass = true;
 
 	message: string | undefined;
 	progress: number | undefined;

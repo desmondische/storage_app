@@ -1,0 +1,38 @@
+<div class="account-container">
+	<div class="logo">
+		<i class="fa-brands fa-bity"></i>
+	</div>
+	<div class="title">
+		<strong>Warehouse</strong>
+	</div>
+
+	<form [formGroup]="form" (ngSubmit)="onSubmit()">
+		<div class="fields">
+			<div class="username">
+				<i class="fa-solid fa-user"></i>
+				<input type="text" class="user-input" name="username" formControlName="username" placeholder="Username"
+					[autofocus]="true" [required]="true">
+			</div>
+			<div class="password">
+				<i class="fa-solid fa-key"></i>
+				<input type="password" class="password-input" name="password" formControlName="password"
+					placeholder="Password" [required]="true">
+			</div>
+		</div>
+		<div class="action-group">
+			<button *ngIf="!isRegister; else register" type="submit" class="signin-button">
+				<i class="fa-solid fa-door-open"></i>
+				Login
+			</button>
+			<ng-template #register>
+				<button *ngIf="isRegister" type="submit" class="signin-button">
+					<i class="fa-solid fa-door-open"></i>
+					Register
+				</button>
+			</ng-template>
+			<div class="links">
+				<a (click)="switchToRegister()"> {{ accountAction }} </a>
+			</div>
+		</div>
+	</form>
+</div>

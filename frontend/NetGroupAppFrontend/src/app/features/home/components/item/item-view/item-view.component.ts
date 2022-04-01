@@ -1,6 +1,8 @@
-import { Component, HostBinding, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { Component, HostBinding, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 
 import { ItemCreateComponent } from './../item-create/item-create.component';
 import { UploadService } from 'src/app/shared/services/upload/upload.service';
@@ -24,6 +26,8 @@ import { Item } from 'src/app/core/models/item/item.model';
 export class ItemViewComponent implements OnInit {
 	@HostBinding('class.item-view') hostCssClass = true;
 
+	@ViewChild(MatPaginator) paginator!: MatPaginator;
+
 	columns = [
 		{ columnDef: 'id', header: '#', cell: (element: Item) => `# ${element.id}` },
 		{ columnDef: 'title', header: 'Title', cell: (element: Item) => `${element.title}` },
@@ -32,23 +36,34 @@ export class ItemViewComponent implements OnInit {
 		{ columnDef: 'storageId', header: 'Storage', cell: (element: Item) => `${element.storage?.storageSpace}` },
 	];
 
-	dataSource!: Item[];
+	dataSource = new MatTableDataSource<Item>();
 	expandedData!: Item;
 	columnsToDisplay: string[] = this.columns.map(c => c.columnDef).concat('actions');
 
 	constructor(
 		private service: ItemService,
 		private uploadService: UploadService,
-		private dialog: MatDialog
+		private dialog: MatDialog,
 	) { }
 
 	ngOnInit(): void {
 		this.getAllItems();
 	}
 
-	openCreateItemDialog(): void {
+	applyFilter(event: Event) {
+		const filterValue = (event.target as HTMLInputElement).value;
+		this.dataSource.filter = filterValue.trim().toLowerCase();
+
+		if (this.dataSource.paginator) {
+			this.dataSource.paginator.firstPage();
+		}
+	}
+
+	openCreateEditItemDialog(id?: number): void {
 		const dialogRef = this.dialog.open(ItemCreateComponent, {
+			data: id,
 			width: '430px',
+			position: { top: "12%" }
 		});
 
 		dialogRef.afterClosed().subscribe(
@@ -72,7 +87,10 @@ export class ItemViewComponent implements OnInit {
 
 	private getAllItems(): void {
 		this.service.getItemsList().subscribe(
-			data => this.dataSource = data
+			data => {
+				this.dataSource.data = data;
+				this.dataSource.paginator = this.paginator;
+			}
 		);
 	}
 }

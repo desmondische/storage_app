@@ -1,0 +1,51 @@
+.storage-details {
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 24px;
+
+		.info-group {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+			padding: 0 32px;
+		}
+
+		&-title,
+		&-items,
+		&-date {
+			display: flex;
+			align-items: center;
+			margin-bottom: 12px;
+			text-align: left;
+
+			span {
+				margin-left: 10px;
+				word-wrap: break-word;
+			}
+
+			i {
+				width: 16px;
+				color: #9b9b9b;
+			}
+		}
+
+		&-items {
+			flex-direction: column;
+			align-items: flex-start;
+
+			.item {
+				margin-right: 24px;
+				margin-bottom: 6px;
+			}
+		}
+
+		&-date {
+			max-width: 150px;
+		}
+	
+		.hidden {
+			visibility: hidden;
+		}
+}

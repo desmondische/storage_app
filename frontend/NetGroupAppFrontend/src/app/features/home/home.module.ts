@@ -7,9 +7,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRippleModule } from '@angular/material/core';
+import { MatPaginatorModule } from '@angular/material/paginator';
+
 
 import { HomeComponent } from './home.component';
 import { StorageCreateComponent } from './components/storage/storage-create/storage-create.component';
@@ -25,8 +28,8 @@ import { UploadComponent } from 'src/app/shared/components/upload/upload.compone
 		StorageCreateComponent,
 		StorageViewComponent,
 		ItemViewComponent,
-		StorageDetailsComponent, 
-		ItemCreateComponent, 
+		StorageDetailsComponent,
+		ItemCreateComponent,
 		UploadComponent
 	],
 	imports: [
@@ -41,7 +44,16 @@ import { UploadComponent } from 'src/app/shared/components/upload/upload.compone
 		MatTableModule,
 		MatDialogModule,
 		MatTabsModule,
-		MatSelectModule
+		MatSelectModule,
+		MatRippleModule,
+		MatPaginatorModule
 	],
+	providers: [
+		{
+			provide: MAT_DIALOG_DATA, useValue: {}
+		},
+		{
+			provide: MatDialogRef, useValue: {}
+		}]
 })
 export class HomeModule { }

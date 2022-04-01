@@ -1,17 +1,19 @@
+import { AuthGuard } from './core/guards/auth.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomeComponent } from './features/home/home.component';
-import { LoginComponent } from './features/login/login.component';
+import { AccountComponent } from './features/account/account.component';
 
 const routes: Routes = [
     {
-        path: 'login',
-        component: LoginComponent,
+        path: 'account',
+        component: AccountComponent,
     },
     {
         path: 'home',
         component: HomeComponent,
+		canActivate: [AuthGuard]
     },
     {
         path: '**',

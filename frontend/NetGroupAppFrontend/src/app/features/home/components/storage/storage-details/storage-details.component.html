@@ -1,5 +1,19 @@
 <mat-card>
 	<mat-card-content>
-		hello, Svetik moja lubimaja devotka!
+		<div class="info-group">
+			<div class="storage-details-title">
+				<h1>{{ storage.storageSpace }}</h1>
+			</div>
+			<div class="storage-details-date">
+				<i class="fa-solid fa-calendar-plus"></i>
+				<span>{{ storage.createdDate | date }}</span>
+			</div>
+			<div *ngIf="storage.items" class="storage-details-items">
+				<div *ngFor="let item of storage.items; let i = index" class="item">
+					<i class="fa-solid fa-box-archive" [ngClass]="{'hidden' : i != 0}"></i>
+					<span>{{ item.title }} </span>
+				</div>
+			</div>
+		</div>
 	</mat-card-content>
 </mat-card>
