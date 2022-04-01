@@ -12,6 +12,6 @@
 6.  FE project README.md in the frontend project directory
 
 To register user use password pattern: 1 uppercase,
-1 digit, 1 specia
+1 digit, 1 special
 
-Admin credentials: admind, Admin@1
+Admin credentials: admin, Admin@1
