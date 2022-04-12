@@ -20,7 +20,7 @@ namespace NetGroupAppBackend.Controllers
 
                 if (file.Length > 0)
                 {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName!.Trim('"');
+                    var fileName = Path.Combine("image_" + DateTime.Now.TimeOfDay.Milliseconds + "_" + file.FileName.Trim('"'));
                     var filePath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
 
