@@ -1,4 +1,4 @@
-﻿namespace NetGroupAppBackend.Models.DTOs
+﻿namespace NetGroupAppBackend.Models.Data.DTOs
 {
     public class StorageDTO
     {

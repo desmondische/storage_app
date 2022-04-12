@@ -1,4 +1,4 @@
-﻿namespace NetGroupAppBackend.Auth.Models
+﻿namespace NetGroupAppBackend.Models.Auth
 {
     public static class UserRoles
     {

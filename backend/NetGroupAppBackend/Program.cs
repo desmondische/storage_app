@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NetGroupAppBackend.Auth;
 using NetGroupAppBackend.Data;
 using System.Text;
 
@@ -52,16 +51,11 @@ builder.Services.AddSwaggerGen(option =>
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
-
-builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-{
-    options.UseSqlServer(configuration.GetConnectionString("ConnectionString"));
+    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppIdentityDbContext>()
+    .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(options =>

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetGroupAppBackend.Data;
 using NetGroupAppBackend.Models;
-using NetGroupAppBackend.Models.DTOs;
+using NetGroupAppBackend.Models.Data.DTOs;
 using System.Security.Claims;
 
 namespace NetGroupAppBackend.Controllers
