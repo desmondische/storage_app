@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NetGroupAppBackend.Models.DTOs
+namespace NetGroupAppBackend.Models.Data.DTOs
 {
     public class ItemDTO
     {

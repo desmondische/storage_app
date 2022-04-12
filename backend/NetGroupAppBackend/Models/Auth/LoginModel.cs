@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NetGroupAppBackend.Auth.Models
+namespace NetGroupAppBackend.Models.Auth
 {
-    public class RegisterModel
+    public class LoginModel
     {
         [Required(ErrorMessage = "User Name is required")]
         public string Username { get; set; } = string.Empty;
