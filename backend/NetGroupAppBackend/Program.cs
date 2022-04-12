@@ -51,7 +51,7 @@ builder.Services.AddSwaggerGen(option =>
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(configuration.GetConnectionString("NetGroupDb"));
 });
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
