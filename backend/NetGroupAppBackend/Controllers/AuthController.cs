@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using NetGroupAppBackend.Models.Auth;
+using NetGroupAppBackend.Auth.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -51,7 +51,6 @@ namespace NetGroupAppBackend.Controllers
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
-                    roles = userRoles,
                     expiration = token.ValidTo
                 });
             }
@@ -76,7 +75,6 @@ namespace NetGroupAppBackend.Controllers
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
-
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, 
@@ -85,12 +83,6 @@ namespace NetGroupAppBackend.Controllers
                         Status = "Error", 
                         Message = "User creation failed!" 
                     });
-
-            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-
-            await _userManager.AddToRoleAsync(user, UserRoles.User);
-
 
             return Ok(
                 new Response 
@@ -131,8 +123,17 @@ namespace NetGroupAppBackend.Controllers
             if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
                 await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
 
-            await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
+            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+            }
+            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _userManager.AddToRoleAsync(user, UserRoles.User);
+            }
             return Ok(
                 new Response 
                 { 
@@ -155,5 +156,6 @@ namespace NetGroupAppBackend.Controllers
 
             return token;
         }
+
     }
 }

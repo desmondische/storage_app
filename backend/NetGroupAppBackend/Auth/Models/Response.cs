@@ -1,4 +1,4 @@
-﻿namespace NetGroupAppBackend.Models.Auth
+﻿namespace NetGroupAppBackend.Auth.Models
 {
     public class Response
     {
