@@ -10,7 +10,9 @@ const headers = new HttpHeaders()
 @Injectable()
 export class ItemService {
 
-	constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) {
+		console.log("asd");
+	}
 
 	getItemsList(): Observable<Item[]> {
 		return this.http.get<Item[]>(`${environment.apiUrl}/items/`,

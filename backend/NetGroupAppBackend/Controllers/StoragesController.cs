@@ -3,12 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NetGroupAppBackend.Data;
+using NetGroupAppBackend.Filter;
 using NetGroupAppBackend.Models;
+using NetGroupAppBackend.Models.Data.DTOs;
+using NetGroupAppBackend.Wrappers;
+using System.Linq;
+using System.Net;
 using System.Security.Claims;
 
 namespace NetGroupAppBackend.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StoragesController : ControllerBase
@@ -22,15 +27,19 @@ namespace NetGroupAppBackend.Controllers
 
         // GET: api/Storages
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Storage>>> GetStorages()
+        public async Task<ActionResult<IEnumerable<Storage>>> GetStorages([FromQuery] PaginationFilter filter)
         {
+            var storages = _context.Storages;
 
-            var storage = await _context.Storages
-                                .Where(x => x.UserId == GetUserId())
-                                .Include(x => x.Items)
-                                .ToListAsync();
+            var validFilter = new PaginationFilter(filter.Page, filter.PageSize);
+            var pagedData = await storages
+                            .Skip((validFilter.Page - 1) * validFilter.PageSize)
+                            .Take(validFilter.PageSize)
+                            .ToListAsync();
 
-            return storage;
+            var totalRecords = await storages.CountAsync();
+
+            return Ok(new PagedResponse<List<Storage>>(pagedData, validFilter.Page, validFilter.PageSize, totalRecords));
         }
 
         // GET: api/Storages/5
@@ -38,7 +47,7 @@ namespace NetGroupAppBackend.Controllers
         public async Task<ActionResult<Storage>> GetStorage(int id)
         {
             var storage = await _context.Storages
-                                .Where(c => c.Id == id && c.UserId == GetUserId())
+                                //.Where(c => c.Id == id && c.UserId == GetUserId())
                                 .Include(c => c.Items)
                                 .FirstOrDefaultAsync();
 
@@ -55,7 +64,7 @@ namespace NetGroupAppBackend.Controllers
                 return BadRequest();
             }
 
-            storage.UserId = GetUserId();
+            //storage.UserId = GetUserId();
             _context.Entry(storage).State = EntityState.Modified;
 
             try
@@ -82,7 +91,7 @@ namespace NetGroupAppBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<Storage>> PostStorage(Storage storage)
         {
-            storage.UserId = GetUserId();
+            //storage.UserId = GetUserId();
             _context.Storages.Add(storage);
             await _context.SaveChangesAsync();
 
@@ -91,9 +100,10 @@ namespace NetGroupAppBackend.Controllers
 
         // DELETE: api/Storages/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStorage(int id)
+        public async Task<IActionResult> DeleteStorage(int id, [FromQuery] PaginationFilter filter)
         {
-            var storage = await _context.Storages.FindAsync(id);
+            var storages = _context.Storages;
+            var storage = await storages.FindAsync(id);
             if (storage == null)
             {
                 return NotFound();
@@ -102,13 +112,22 @@ namespace NetGroupAppBackend.Controllers
             _context.Storages.Remove(storage);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            var validFilter = new PaginationFilter(filter.Page, filter.PageSize);
+            var pagedData = await storages
+                            .Skip((validFilter.Page - 1) * validFilter.PageSize)
+                            .Take(validFilter.PageSize)
+                            .ToListAsync();
+
+            var totalRecords = await storages.CountAsync();
+
+            return Ok(new PagedResponse<List<Storage>>(pagedData, validFilter.Page, validFilter.PageSize, totalRecords));
         }
 
         private bool StorageExists(int id)
         {
             return _context.Storages.Any(e => e.Id == id);
         }
+
         private string GetUserId()
         {
             var claimsIdentity = User.Identity as ClaimsIdentity;

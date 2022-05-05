@@ -44,7 +44,9 @@ export class ItemViewComponent implements OnInit {
 		private service: ItemService,
 		private uploadService: UploadService,
 		private dialog: MatDialog,
-	) { }
+	) {
+		console.log("dsa");
+	}
 
 	ngOnInit(): void {
 		this.getAllItems();

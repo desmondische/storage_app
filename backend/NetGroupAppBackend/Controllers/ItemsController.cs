@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace NetGroupAppBackend.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase
@@ -31,7 +31,7 @@ namespace NetGroupAppBackend.Controllers
         public async Task<ActionResult<IEnumerable<ItemDTO>>> GetItems()
         {
             var item = await _context.Items
-                                .Where(x => x.UserId == GetUserId())
+                                //.Where(x => x.UserId == GetUserId())
                                 .Select(n => new ItemDTO()
                                 {
                                     Title = n.Title,
@@ -56,7 +56,7 @@ namespace NetGroupAppBackend.Controllers
         public async Task<ActionResult<Item>> GetItem(int id)
         {
             var item = await _context.Items
-                                    .Where(c => c.Id == id && c.UserId == GetUserId())
+                                    //.Where(c => c.Id == id && c.UserId == GetUserId())
                                     .Include(c => c.Storage)
                                     .FirstOrDefaultAsync();
 
@@ -90,7 +90,7 @@ namespace NetGroupAppBackend.Controllers
         public async Task<ActionResult<Item>> PostItem(Item item)
         {
 
-            item.UserId = GetUserId();
+            //item.UserId = GetUserId();
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
 
