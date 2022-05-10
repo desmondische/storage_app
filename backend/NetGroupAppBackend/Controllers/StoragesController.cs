@@ -35,6 +35,7 @@ namespace NetGroupAppBackend.Controllers
             var pagedData = await storages
                             .Skip((validFilter.Page - 1) * validFilter.PageSize)
                             .Take(validFilter.PageSize)
+                            .Include(c => c.Items)
                             .ToListAsync();
 
             var totalRecords = await storages.CountAsync();
@@ -48,6 +49,7 @@ namespace NetGroupAppBackend.Controllers
         {
             var storage = await _context.Storages
                                 //.Where(c => c.Id == id && c.UserId == GetUserId())
+                                .Where(c => c.Id == id)
                                 .Include(c => c.Items)
                                 .FirstOrDefaultAsync();
 
@@ -116,6 +118,7 @@ namespace NetGroupAppBackend.Controllers
             var pagedData = await storages
                             .Skip((validFilter.Page - 1) * validFilter.PageSize)
                             .Take(validFilter.PageSize)
+                            .Include(c => c.Items)
                             .ToListAsync();
 
             var totalRecords = await storages.CountAsync();
