@@ -1,17 +1,12 @@
-# netgroup_app
+# storage_app
 
-0. .NET Core 6.0 + Angular 13
+A warehouse system web application where user can register and log in.
+Application allows to create an unlimited number of storage levels for storing things.
+It also allows to add items to each storage space with possibility for user to 
+set some of the properties.
 
-1.  Clone repository
-
-2.  Server port is :7230
-3.  Database .mdf file is located in zip
-4.  Put it in C:\Users\{username}
-5.  Migration, update database, launch
-
-6.  FE project README.md in the frontend project directory
-
-To register user use password pattern: 1 uppercase,
-1 digit, 1 special
-
-Admin credentials: admin, Admin@1
+Technology:
+- Frontend: Angular 13, TypeScript
+- Backend: .NET Core 6
+- Database: MS SQL
+- Application type: Client-Server with REST API
